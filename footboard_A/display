@@ -30,7 +30,7 @@ void updateBankInIntroMessage() {
   String s = curBank;
   char mc[sizeof(s)];
   s.toCharArray(mc, sizeof(mc));
-  introMessage[68] = mc[0];
+  introMessage[67] = mc[0];
 }
 
 void changeMessage(char msg[BUF_SIZE]) {
