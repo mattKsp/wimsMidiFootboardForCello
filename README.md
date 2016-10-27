@@ -4,13 +4,15 @@ Version A
 
 ## About
 Repository is an Arduino project using Teensy MIDI.
-  * Can transmit and receive MIDI Note, CC & Sysex messages over USB
+It can transmit and receive MIDI Note, CC & Sysex messages over USB.
 
 ### Hardware
 - Teensy 3.2 board
 - 5x Normally Closed foot switches (pins 0-4)
 - 1x LED (pin 6)
 - 2x 8x8 LED matrix (more coming) (pins CS 10, DOUT 11, CLK 13)
+- USB cable
+- Case (of some description)
 
 ### Software
 - Arduino 
