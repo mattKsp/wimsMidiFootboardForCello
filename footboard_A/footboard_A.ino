@@ -124,7 +124,7 @@ textEffect_t  effect[] =
 // Global message buffers shared by Serial and Scrolling functions
 #define BUF_SIZE  75
 //char introMessage[BUF_SIZE] = "<  >   MIDI Cello footboard v.A  -  W!M | Thurstan   <  >    Bank 0   <  >";
-char introMessage[BUF_SIZE] = "<  >   W!Ms MIDI footboard for cello v.A - by Thur|stan   <  >  Bank 0  <  >";
+char introMessage[BUF_SIZE] = "<  >   W!Ms MIDI footboard for cello v.A - by Thurstan    |   Bank 0  <  >";
 char defMessage[BUF_SIZE] = "W!M";
 char prevMessage[BUF_SIZE];
 char curMessage[BUF_SIZE];
