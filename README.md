@@ -1,11 +1,10 @@
 # W!Ms MIDI footboard for cello
 MIDI foot controller for use with Cello and guitar.
-
-## About
 Repository is an Arduino project using Teensy MIDI.
-It can transmit and receive MIDI Note, CC & Sysex messages over USB.
+Transmits and receives MIDI Notes, CC & Sysex messages over USB.
 
-### Hardware
+### Equipment
+#### Hardware
 - Teensy 3.2 board
 - 5x Normally Closed foot switches (pins 0-4)
 - 1x LED (pin 6)
@@ -13,7 +12,7 @@ It can transmit and receive MIDI Note, CC & Sysex messages over USB.
 - USB cable
 - Case (of some description)
 
-### Software
+#### Software
 - Arduino 
 - Teensyduino plugin (for Arduino) - https://www.pjrc.com/teensy/td_download.html
   * Make sure Arduino software is set to 'MIDI'
@@ -23,13 +22,13 @@ It can transmit and receive MIDI Note, CC & Sysex messages over USB.
 - EEPROM libary
 - usbMIDI library (teensy)
 
-### Licences
+### Licence
 - Written by M.Standish (Thurstan/mattKsp) 2016 (..this is available to anyone for free, i don't care that much, just don't steal my name).
 - Released under GNU GPLv3 (see LICENCE file)
 
 This software is provided on an "AS-IS-BASIS".
 
-### References
+### Reference
 https://www.pjrc.com/teensy/td_midi.html<br>
 https://forum.pjrc.com/threads/24537-Footsy-Teensy-2-based-MIDI-foot-pedal-controller<br>
 https://learn.sparkfun.com/tutorials/midi-tutorial/all
