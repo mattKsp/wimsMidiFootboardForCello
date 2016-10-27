@@ -4,6 +4,7 @@ Version A
 
 ## About
 Repository is an Arduino project using Teensy MIDI.
+  * Can transmit and receive MIDI Note, CC & Sysex messages over USB
 
 ### Hardware
 - Teensy 3.2 board
