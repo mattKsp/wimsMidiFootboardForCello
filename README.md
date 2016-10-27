@@ -1,5 +1,6 @@
 # W!Ms MIDI footboard for cello
-MIDI foot controller for use with Cello and guitar<br>
+MIDI foot controller for use with Cello and guitar
+
 Repository is an Arduino project using Teensy MIDI<br>
 Transmits and receives MIDI Notes, CC & Sysex messages over USB
 
