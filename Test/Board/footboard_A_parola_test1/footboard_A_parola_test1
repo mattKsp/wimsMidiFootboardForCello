@@ -1,0 +1,185 @@
+//footboard_parola_test1
+
+#include <MD_Parola.h>
+#include <MD_MAX72xx.h>
+
+// Define the number of devices we have in the chain and the hardware interface
+#define MAX_DEVICES 2
+#define CS_PIN    10
+#define DATA_PIN  11
+#define CLK_PIN   13
+
+// HARDWARE SPI
+MD_Parola P = MD_Parola(CS_PIN, MAX_DEVICES);
+
+#define SPEED_TIME      50 //25
+#define PAUSE_TIME      3000  //???
+//#define SPEED_DEADBAND  5
+
+uint8_t  frameDelay = 50;  // default frame delay value
+//textEffect_t  scrollEffect = SCROLL_LEFT; // SCROLL_LEFT SCROLL_RIGHT SLICE PRINT WIPE
+uint8_t  inFX, outFX;
+uint8_t prevInFX, prevOutFX;
+textEffect_t  effect[] =
+{
+  PRINT,
+  SCAN_HORIZ,
+  SCROLL_LEFT,
+  WIPE,
+  SCROLL_UP_LEFT,
+  SCROLL_UP,
+  OPENING_CURSOR,
+  GROW_UP,
+  SCROLL_UP_RIGHT,
+  BLINDS,
+  CLOSING,
+  GROW_DOWN,
+  SCAN_VERT,
+  SCROLL_DOWN_LEFT,
+  WIPE_CURSOR,
+  DISSOLVE,
+  OPENING,
+  CLOSING_CURSOR,
+  SCROLL_DOWN_RIGHT,
+  SCROLL_RIGHT,
+  SLICE,
+  SCROLL_DOWN,
+};
+
+// Global message buffers shared by Serial and Scrolling functions
+#define BUF_SIZE  75
+char setupMessage[BUF_SIZE] = "vCf setup";
+char introMessage[BUF_SIZE] = "<  >   Cello footboard v.A  -  W!M | Thurstan   <  >";
+char defMessage[BUF_SIZE] = "W!M";
+char prevMessage[BUF_SIZE];
+char curMessage[BUF_SIZE];
+char newMessage[BUF_SIZE];
+bool newMessageAvailable = false;
+
+// TIMING
+//long last = 0;  //used for bounce //all volatile if using void on interrupt
+//bool turnOff = false;
+//long offAt = 0;
+//bool turnOff2temp = false;  //TEMP
+bool flashMessageActive = false;
+long flashMessageOffAt = 0;
+bool firstTimeRun = true; //gets toggled to false when first time setup stuff done
+bool firstTimeMessageChange = true;
+
+void setup()
+{
+  P.begin();
+  P.displayClear();
+  P.displaySuspend(false);
+  P.setInvert(false);
+  P.setIntensity(1);
+
+  inFX = 6; //2 0
+  outFX = 1;  //0
+  
+  //P.displayScroll(curMessage, LEFT, scrollEffect, frameDelay);
+  P.displayText(curMessage, CENTER, SPEED_TIME, PAUSE_TIME, effect[inFX], effect[outFX]);
+
+      /*
+      //String s1 = "";
+      char testMessage[BUF_SIZE] = "W!M - Cello footboard A";
+      byte data[BUF_SIZE]; //4
+      data[0] = 0xF0;
+      data[1] = 0x7D;
+      data[2] = 0xF7;
+      
+      //copy byte array to string
+      //s1 = data;
+      char *cstring = (char*) data; //copy byte array to char array
+      //strcpy(testMessage, cstring);
+      //testMessage = "W!M - Cello footboard A";
+      //s1 = "aaa";
+      //s1.toCharArray(testMessage, sizeof(testMessage)); //copies string to testMessage
+      //s1.getBytes(data, sizeof(data));  //copies string to data
+      
+      strcpy(curMessage, testMessage);
+      */
+      
+  //strcpy(curMessage, "W!M - Cello footboard A, setup.");setupMessage
+  strcpy(curMessage, defMessage); //setup for first loop
+  newMessage[0] = '\0';
+
+  //turnOff = true;
+  //offAt = millis() + 5000;  //now + 5 secs
+  //flashMessage("flash message active", 3, 12, 5000);
+}
+
+void loop() 
+{
+  if (firstTimeRun) {
+    //flashMessage(introMessage, 20, 2, 5000);
+    flashMessage(introMessage, 2, 2, 20000);  //hijacked
+    //changeMessage(defMessage);
+    firstTimeRun = false;
+  }
+  if (flashMessageActive) {
+    if (millis() >= flashMessageOffAt) {
+      changeEffect(prevInFX, prevOutFX);  //change back
+      changeMessage(prevMessage);
+      flashMessageActive = false; //reset
+    }
+  }
+  /*if (turnOff) {
+    if (millis() >= offAt) {
+      //changeMessage("turn off", -1, -1);  //-1 means no change for FX
+      if (turnOff2temp) {
+        changeEffect(0, 0);
+        turnOff2temp = false;
+        turnOff = false;
+      } else {
+      changeMessage("turn off");
+      offAt = millis() + 5000;  //now + 5 secs
+      turnOff2temp = true;
+      //turnOff = false;
+      }
+    }
+  }
+  */
+  //readSerial();
+  if (P.displayAnimate()) 
+  {
+    if (newMessageAvailable)
+    {
+      //if (firstTimeMessageChange) { strcpy(prevMessage, defMessage); firstTimeMessageChange = false;}
+      //else { 
+        strcpy(prevMessage, curMessage); //backup
+        //}
+      strcpy(curMessage, newMessage);
+      newMessageAvailable = false;
+    }
+    P.displayReset();
+  }
+
+  //
+  //if (firstTimeRun) {
+    //flashMessage(introMessage, 20, 2, 5000);
+    //firstTimeRun = false;
+  //}
+}
+
+void changeMessage(char msg[BUF_SIZE]) {
+  strcpy(newMessage, msg);
+  newMessageAvailable = true;
+}
+
+void flashMessage(char msg[BUF_SIZE], uint8_t FXi, uint8_t FXo, long t) {
+  //show some txt for short period with effects
+  changeEffect(FXi, FXo); //problem is this changes now..
+  changeMessage(msg);     //..whereas this changes later
+  flashMessageActive = true;  //set for main loop
+  flashMessageOffAt = millis() + t;   //5000;  //now + 5 secs
+}
+
+void changeEffect(uint8_t FXi, uint8_t FXo) {
+  prevInFX = inFX;    //backup
+  prevOutFX = outFX;  //backup
+  inFX = FXi;
+  outFX = FXo;
+  P.setTextEffect(effect[FXi], effect[FXo]);
+  P.displayReset();
+}
