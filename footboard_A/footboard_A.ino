@@ -1,5 +1,5 @@
 /*
-   W!Ms MIDI foot board for cello - version A
+   W!Ms MIDI footboard A for cello
    by Thurstan/mattKsp
 
    Teensy 3.2 board
@@ -121,10 +121,10 @@ textEffect_t  effect[] =
   SCROLL_DOWN,
 };
 
-// Global message buffers shared by Serial and Scrolling functions
+// Global message buffers shared by Serial and Scrolling functions   
 #define BUF_SIZE  75
-//char introMessage[BUF_SIZE] = "<  >   MIDI Cello footboard v.A  -  W!M | Thurstan   <  >    Bank 0   <  >";
-char introMessage[BUF_SIZE] = "<  >   W!Ms MIDI footboard for cello v.A - by Thurstan    |   Bank 0  <  >";
+//char introMessage[BUF_SIZE] = "<  >    MIDI Cello footboard A  -  W!M | Thurstan    <  >    Bank 0   <  >"; //  |for cello |
+char introMessage[BUF_SIZE] = "<  >     W!Ms MIDI footboard A   -   by Thurstan      |     Bank 0    <  >";   //'0' at end gets replaced with actual number
 char defMessage[BUF_SIZE] = "W!M";
 char prevMessage[BUF_SIZE];
 char curMessage[BUF_SIZE];
