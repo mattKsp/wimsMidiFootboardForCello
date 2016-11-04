@@ -1,6 +1,6 @@
 /*
    W!Ms MIDI footboard A for cello
-   by Thurstan/mattKsp
+   by M.Standish (Thurstan/mattKsp)
 
    Teensy 3.2 board
    Teensuduino plugin for Arduino software
